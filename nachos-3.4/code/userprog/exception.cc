@@ -153,6 +153,13 @@ int doFork(int functionAddr)
     AddrSpace *childAddrSpace;
     childAddrSpace = new AddrSpace(currentThread->space);
 
+    // Delete exited children and set parent null for non-exited ones
+    childAddrSpace->pcb->DeleteExitedChildrenSetParentNull();
+
+    // Manage PCB memory As a child process
+    if (childAddrSpace->pcb->parent == NULL)
+        pcbManager->DeallocatePCB(childAddrSpace->pcb);
+
     // 4. Create a new thread for the child and set its addrSpace
     // childThread = new Thread("childThread")
     // child->space = childAddSpace;
@@ -170,13 +177,6 @@ int doFork(int functionAddr)
     childPCB->parent = currentThread->space->pcb;
 
     currentThread->space->pcb->AddChild(childPCB);
-
-    // Delete exited children and set parent null for non-exited ones
-    childAddrSpace->pcb->DeleteExitedChildrenSetParentNull();
-
-    // Manage PCB memory As a child process
-    if (childAddrSpace->pcb->parent == NULL)
-        pcbManager->DeallocatePCB(childAddrSpace->pcb);
 
     //Give the child address space the new PCB:
     childAddrSpace->pcb = childPCB;
