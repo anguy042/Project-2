@@ -250,7 +250,7 @@ int doExec(char *filename)
 
     // Manage PCB memory As a child process
     if (spcb->parent == NULL)
-        pcbManager->DeallocatePCB(pcb);
+        pcbManager->DeallocatePCB(spcb);
 
     // 6. Set the PCB for the new addrspace - reused from deleted address space
     space->pcb = pcb;
