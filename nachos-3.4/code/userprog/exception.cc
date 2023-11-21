@@ -242,6 +242,16 @@ int doExec(char *filename)
         return -1;
     }
 
+    // Manage PCB memory As a parent process
+    PCB *spcb = space->pcb;
+
+    // Delete exited children and set parent null for non-exited ones
+    spcb->DeleteExitedChildrenSetParentNull();
+
+    // Manage PCB memory As a child process
+    if (spcb->parent == NULL)
+        pcbManager->DeallocatePCB(pcb);
+
     // 6. Set the PCB for the new addrspace - reused from deleted address space
     space->pcb = pcb;
 
@@ -303,7 +313,7 @@ int doJoin(int pid)
 
 int doKill(int pid)
 {
-    printf("System Call: [%d] invoked [Kill]\n", currentThread->space->pcb->pid);
+    printf("System Call: [%d] invoked Kill\n", currentThread->space->pcb->pid);
 
     // 1. Check if the pid is valid and if not, return -1
     PCB *targetPCB = pcbManager->GetPCB(pid);
