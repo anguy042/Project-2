@@ -89,8 +89,8 @@ AddrSpace::AddrSpace(OpenFile *executable)
     }
 
     // Allocate a new PCB for the address space
-    pcb = pcbManager->AllocatePCB();
-    pcb->thread = currentThread;
+    // pcb = pcbManager->AllocatePCB();
+    // pcb->thread = currentThread;
 
     DEBUG('a', "Initializing address space, num pages %d, size %d\n",
 					numPages, size);
