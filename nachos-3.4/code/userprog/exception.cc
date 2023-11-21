@@ -165,7 +165,7 @@ int doFork(int functionAddr)
     // pcb->thread = childThread
     // set parent for child pcb
     // add child for parent pcb
-    PCB *spcb = childAddrSpace->pcb;
+    PCB *childPCB = childAddrSpace->pcb;
     //PCB* childPCB = pcbManager->AllocatePCB();
     childPCB->thread = childThread;
     childPCB->parent = currentThread->space->pcb;
