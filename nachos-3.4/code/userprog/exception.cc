@@ -214,7 +214,7 @@ int doFork(int functionAddr)
 int doExec(char *filename)
 {
     printf("System Call: [%d] invoked [Exec]\n", currentThread->space->pcb->pid);
-	printf("Exec Program: [%d] loading [%s]\n", filename);
+	printf("Exec Program: [%d] loading [%s]\n", currentThread->space->pcb->pid, filename);
 
     // Use progtest.cc:StartProcess() as a guide
 
