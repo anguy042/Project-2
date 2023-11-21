@@ -165,15 +165,21 @@ int doFork(int functionAddr)
     // pcb->thread = childThread
     // set parent for child pcb
     // add child for parent pcb
-    PCB *childPCB = childAddrSpace->pcb;
-    //PCB* childPCB = pcbManager->AllocatePCB();
+    PCB* childPCB = pcbManager->AllocatePCB();
     childPCB->thread = childThread;
     childPCB->parent = currentThread->space->pcb;
 
     currentThread->space->pcb->AddChild(childPCB);
 
+    // Delete exited children and set parent null for non-exited ones
+    childAddrSpace->pcb->DeleteExitedChildrenSetParentNull();
+
+    // Manage PCB memory As a child process
+    if (childAddrSpace->pcb->parent == NULL)
+        pcbManager->DeallocatePCB(childAddrSpace->pcb);
+
     //Give the child address space the new PCB:
-    //childAddrSpace->pcb = childPCB;
+    childAddrSpace->pcb = childPCB;
 
 
     // 6. Set up machine registers for child and save it to child thread
